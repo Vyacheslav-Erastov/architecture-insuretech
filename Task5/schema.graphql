@@ -1,0 +1,66 @@
+"""
+Данная схема определяет все сущности, их поля и необходимые запросы,
+которые покрывают все операции REST, так как мы можем динамически менять схему запроса
+используя только один endpoint
+
+Например получить все документы клиента с id = "test":
+query {
+  client(id: "test") {
+    documents {
+      id
+      type
+      number
+      issueDate
+      expiryDate
+    }
+  }
+}
+
+Или определенные поля из двух дочерних сущностей:
+query {
+  client(id: "test") {
+    name
+    documents {
+      type
+      number
+    }
+    relatives {
+      name
+      relationType
+    }
+  }
+}
+"""
+
+schema {
+  query: Query
+}
+
+type Query {
+  client(id: ID!): Client
+}
+
+type Client {
+  id: ID!
+  name: String
+  age: Int
+
+  documents: [Document!]
+
+  relatives: [Relative!]
+}
+
+type Document {
+  id: ID!
+  type: String
+  number: String
+  issueDate: String
+  expiryDate: String
+}
+
+type Relative {
+  id: ID!
+  relationType: String
+  name: String
+  age: Int
+}
